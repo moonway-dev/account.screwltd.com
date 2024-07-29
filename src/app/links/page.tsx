@@ -79,7 +79,7 @@ export default function LinksPage() {
           <div className="flex overflow-x-auto space-x-2 mt-2">
             {iconButtons.map((button, index) =>
               button.condition && (
-                <IconButton onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user.jwt_token}`}} icon={button.icon} />
+                <IconButton key={index} onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user.jwt_token}`}} icon={button.icon} />
               )
             )}
             <IconButton disabled={true} icon={<BsThreeDots />} />
@@ -88,7 +88,7 @@ export default function LinksPage() {
       </BlurFade>
       {userDetails.map((detail, index) =>
         detail.condition && (
-          <BlurFade className="w-full" delay={parseFloat(`0.${index + 1}5`)}>
+          <BlurFade key={index} className="w-full" delay={parseFloat(`0.${index + 1}5`)}>
             <div className="relative w-full h-full">
               <div
                 className={cn(

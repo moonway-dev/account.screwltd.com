@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useContext, ReactNode, useCallback } from 'react';
+import React, { useState, useEffect, useContext, ReactNode, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import GridPattern from '@/components/magicui/grid-pattern';
 import { cn } from '@/lib/utils';
@@ -32,6 +32,33 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const [loading, setLoading] = useState<boolean>(true);
     const searchParams = useSearchParams();
 
+    // Функция для получения ключей пользователя
+    const fetchUserKeys = useCallback(async (token: string) => {
+        try {
+            setUser(prevUser => ({
+                ...prevUser,
+                keys: null,
+            }));
+
+            const response = await fetch('https://api.screwltd.com/v3/keys/get', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch keys');
+            }
+            const keys = await response.json();
+            setUser(prevUser => ({
+                ...prevUser,
+                keys,
+            }));
+        } catch (error) {
+            console.error('Error fetching keys:', error);
+        }
+    }, []);
+
+    // Функция для получения профиля пользователя
     const fetchUserProfile = useCallback(async (token: string) => {
         try {
             const response = await fetch('https://api.screwltd.com/v3/auth/profile', {
@@ -47,19 +74,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             setUser(data);
             await fetchUserKeys(token);
             setLoading(false);
-        } catch {
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
             setLoading(false);
             localStorage.removeItem('screwltd-token');
             redirectToAuth();
         }
-    }, []);
+    }, [fetchUserKeys]);
 
     useEffect(() => {
         const checkToken = async () => {
             const tokenFromUrl = searchParams.get('token');
 
             if (!user) {
-                if (tokenFromUrl && tokenFromUrl !== '') {
+                if (tokenFromUrl) {
                     localStorage.setItem('screwltd-token', tokenFromUrl);
                     await fetchUserProfile(tokenFromUrl);
                 } else {
@@ -75,9 +103,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             }
         };
 
-        if (searchParams) {
-            checkToken();
-        }
+        checkToken();
     }, [searchParams, user, fetchUserProfile]);
 
     const setNewData = async (row: string, data: string) => {
@@ -104,52 +130,29 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     };
 
-    const fetchUserKeys = async (token: string) => {
-        try {
-            setUser(prevUser => ({
-                ...prevUser,
-                keys: null, 
-            }));
-
-            const response = await fetch('https://api.screwltd.com/v3/keys/get', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch keys');
-            }
-            const keys = await response.json();
-            setUser(prevUser => ({
-                ...prevUser,
-                keys,
-            }));
-        } catch (error) {
-            console.error('Error fetching keys:', error);
-        }
-    };
-
     return (
         <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys }}>
-            {loading ? (
-                <>
-                    <GridPattern
-                        width={30}
-                        height={30}
-                        x={-1}
-                        y={-1}
-                        strokeDasharray={"4 2"}
-                        className={cn(
-                            "fixed opacity-50 [mask-image:radial-gradient(1000px_circle_at_center,white,transparent)] inset-y-[-30%] h-[150dvh] skew-y-12",
-                        )}
-                    />
-                    <div className="w-[100px] h-[100px] rounded-full flex items-center justify-center fixed inset-0 m-auto">
-                        <RingLoader color="violet" size={35} />
-                    </div>
-                </>
-            ) : (
-                children
-            )}
+            <Suspense fallback={<div></div>}>
+                {loading ? (
+                    <>
+                        <GridPattern
+                            width={30}
+                            height={30}
+                            x={-1}
+                            y={-1}
+                            strokeDasharray={"4 2"}
+                            className={cn(
+                                "fixed opacity-50 [mask-image:radial-gradient(1000px_circle_at_center,white,transparent)] inset-y-[-30%] h-[150dvh] skew-y-12",
+                            )}
+                        />
+                        <div className="w-[100px] h-[100px] rounded-full flex items-center justify-center fixed inset-0 m-auto">
+                            <RingLoader color="violet" size={35} />
+                        </div>
+                    </>
+                ) : (
+                    children
+                )}
+            </Suspense>
         </AuthContext.Provider>
     );
 };

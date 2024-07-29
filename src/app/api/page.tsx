@@ -60,7 +60,7 @@ export default function LinksPage() {
             <Select value={selectedApiType} onChange={handleChangeApiType} sx={{ width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.05)', borderRadius: '10px', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' } }} placeholder="Choose one…" variant="plain">
               <Option value="AI">AI</Option>
               <Option disabled value="CLOUD">Cloud</Option>
-              <Option value="PAYMENT">Payment</Option>
+              <Option disabled value="PAYMENT">Payment</Option>
             </Select>
             <Button onClick={() => createKey()} sx={{ ml: 1, marginY: 0.05, borderRadius: '10px' }}>Create</Button>
           </Stack>

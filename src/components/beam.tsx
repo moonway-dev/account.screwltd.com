@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { RectangleEllipsis } from "lucide-react";
 import { FaGoogle, FaDiscord, FaTwitch, FaGithub } from 'react-icons/fa';
-import screwIcon from './Frame1.png';
 import Image from "next/image";
 
 const Circle = forwardRef<
@@ -58,7 +57,7 @@ export function AnimatedBeamMultipleOutputDemo({
                 </div>
                 <div className="flex flex-col justify-center">
                     <Circle ref={div6Ref} className="size-16">
-                        <Image alt="screw" className="max-h-8 max-w-8" src='./Frame1.png' />
+                        <Image alt="screw" className="max-h-8 max-w-8" src='Frame1.png' />
                     </Circle>
                 </div>
                 <div className="flex flex-col justify-center gap-2">

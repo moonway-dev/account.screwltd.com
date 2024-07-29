@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useContext, ReactNode } from 'react';
+import React, { useState, useEffect, useContext, ReactNode, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import GridPattern from '@/components/magicui/grid-pattern';
 import { cn } from '@/lib/utils';
@@ -32,6 +32,28 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const [loading, setLoading] = useState<boolean>(true);
     const searchParams = useSearchParams();
 
+    const fetchUserProfile = useCallback(async (token: string) => {
+        try {
+            const response = await fetch('https://api.screwltd.com/v3/auth/profile', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Token validation failed');
+            }
+            const data = await response.json();
+            data.jwt_token = token;
+            setUser(data);
+            await fetchUserKeys(token);
+            setLoading(false);
+        } catch {
+            setLoading(false);
+            localStorage.removeItem('screwltd-token');
+            redirectToAuth();
+        }
+    }, []);
+
     useEffect(() => {
         const checkToken = async () => {
             const tokenFromUrl = searchParams.get('token');
@@ -54,7 +76,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         checkToken();
-    }, [searchParams]);
+    }, [searchParams, user, fetchUserProfile]);
 
     const setNewData = async (row: string, data: string) => {
         const editResponse = await fetch('https://api.screwltd.com/v3/auth/update/me', {
@@ -101,30 +123,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     };
 
-    const fetchUserProfile = async (token: string) => {
-        try {
-            const response = await fetch('https://api.screwltd.com/v3/auth/profile', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Token validation failed');
-            }
-            const data = await response.json();
-            data.jwt_token = token;
-            setUser(data);
-            await fetchUserKeys(token);
-            setLoading(false);
-        } catch {
-            setLoading(false);
-            localStorage.removeItem('screwltd-token');
-            redirectToAuth();
-        }
-    };
-
     return (
-        <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys}}>
+        <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys }}>
             {loading ? (
                 <>
                     <GridPattern

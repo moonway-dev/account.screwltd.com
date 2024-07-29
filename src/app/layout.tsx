@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/siteSettings";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
@@ -118,6 +119,7 @@ export default function RootLayout({
         <CssVarsProvider theme={theme} defaultMode="dark">
           <AuthProvider>
             <ThemeProvider attribute="class" defaultTheme="dark">
+              <TooltipProvider delayDuration={0}>
                 <GridPattern
                   width={30}
                   height={30}
@@ -130,6 +132,7 @@ export default function RootLayout({
                 />
                 {children}
                 <Navbar />
+              </TooltipProvider>
             </ThemeProvider>
           </AuthProvider>
         </CssVarsProvider>

@@ -66,7 +66,7 @@ export default function LinksPage() {
           </Stack>
         </div>
       </BlurFade>
-      {user.keys?.map((key, index) => (
+      {user?.keys?.map((key, index) => (
         <BlurFade key={index} delay={parseFloat(`0.${index + 1}5`)} className="w-full">
           <div
             className={cn(

@@ -105,7 +105,7 @@ export default function Profile() {
               src={user?.avatar}
               onLoad={() => setLoadingImg(false)}
               onError={() => setLoadingImg(false)}
-              className="w-[100px] h-[100px] object-cover mb-2 h-auto rounded-full transition-transform duration-300 ease-in-out"
+              className="w-[100px] h-[100px] max-w-[100px] max-h-[100px] object-cover mb-2 rounded-full transition-transform duration-300 ease-in-out"
             />
 
             <div className="w-[100px] h-[100px] absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out rounded-full">

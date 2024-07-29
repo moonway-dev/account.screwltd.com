@@ -9,6 +9,8 @@ import RingLoader from 'react-spinners/RingLoader';
 interface AuthContextType {
     user: Record<string, any> | null;
     loading: boolean;
+    setNewData: (row: string, data: string) => Promise<void>;
+    fetchUserKeys: (token: string) => Promise<void>;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -80,7 +82,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                 ...prevUser,
                 keys: null, 
             }));
-            
+
             const response = await fetch('https://api.screwltd.com/v3/keys/get', {
                 headers: {
                     Authorization: `Bearer ${token}`,

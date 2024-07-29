@@ -52,6 +52,7 @@ export function LinkBeam() {
     </div>
   );
 }
+LinkBeam.displayName = "LinkBeam";
 
 const Icons = {
   openai: () => (

@@ -75,27 +75,33 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             }
         };
 
-        checkToken();
+        if (searchParams) {
+            checkToken();
+        }
     }, [searchParams, user, fetchUserProfile]);
 
     const setNewData = async (row: string, data: string) => {
-        const editResponse = await fetch('https://api.screwltd.com/v3/auth/update/me', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user?.jwt_token}`,
-            },
-            body: JSON.stringify({ [row]: data }),
-        });
+        try {
+            const editResponse = await fetch('https://api.screwltd.com/v3/auth/update/me', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user?.jwt_token}`,
+                },
+                body: JSON.stringify({ [row]: data }),
+            });
 
-        if (!editResponse.ok) {
-            throw new Error(`Edit failed: ${editResponse.statusText}`);
+            if (!editResponse.ok) {
+                throw new Error(`Edit failed: ${editResponse.statusText}`);
+            }
+
+            setUser(prevUser => ({
+                ...prevUser,
+                [row]: data,
+            }));
+        } catch (error) {
+            console.error('Error setting new data:', error);
         }
-
-        setUser(prevUser => ({
-            ...prevUser,
-            [row]: data,
-        }));
     };
 
     const fetchUserKeys = async (token: string) => {

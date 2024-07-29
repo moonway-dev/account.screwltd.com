@@ -68,7 +68,7 @@ export default function LinksPage() {
       </BlurFade>
       {user.keys?.map((key, index) => (
         <BlurFade delay={parseFloat(`0.${index + 1}5`)} className="w-full">
-          <div key={index}
+          <div
             className={cn(
               "group relative w-full mb-4 p-6 overflow-hidden rounded-xl",
               "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",

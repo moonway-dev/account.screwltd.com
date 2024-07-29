@@ -79,7 +79,7 @@ export default function LinksPage() {
           <div className="flex overflow-x-auto space-x-2 mt-2">
             {iconButtons.map((button, index) =>
               button.condition && (
-                <IconButton key={index} onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user.jwt_token}`}} icon={button.icon} />
+                <IconButton onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user.jwt_token}`}} icon={button.icon} />
               )
             )}
             <IconButton disabled={true} icon={<BsThreeDots />} />

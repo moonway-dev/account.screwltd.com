@@ -78,7 +78,6 @@ export default function LinksPage() {
             {iconButtons.map((button, index) =>
               button.condition && (
                 <button
-                  disabled={true}
                   key={index}
                   onClick={() => { window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user?.jwt_token}` }}
                   className={`cursor-pointer p-2 rounded-full bg-white/10 text-white hover:bg-white/30`}

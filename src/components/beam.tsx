@@ -58,7 +58,7 @@ export function AnimatedBeamMultipleOutputDemo({
                 </div>
                 <div className="flex flex-col justify-center">
                     <Circle ref={div6Ref} className="size-16">
-                        <img alt="screw" className="max-h-8 max-w-8" src={screwIcon} />
+                        <Image alt="screw" className="max-h-8 max-w-8" src='./Frame1.png' />
                     </Circle>
                 </div>
                 <div className="flex flex-col justify-center gap-2">

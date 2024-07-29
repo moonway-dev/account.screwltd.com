@@ -4,6 +4,10 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  images: {
+    domains: ['api.screwltd.com'],
+    formats: ['image/avif', 'image/webp'],
+  }
 };
 
 export default nextConfig;

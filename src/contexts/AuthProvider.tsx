@@ -124,7 +124,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, setNewData, fetchUserKeys}}>
+        <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys}}>
             {loading ? (
                 <>
                     <GridPattern

@@ -79,7 +79,7 @@ export default function LinksPage() {
           <div className="flex overflow-x-auto space-x-2 mt-2">
             {iconButtons.map((button, index) =>
               button.condition && (
-                <IconButton key={index} onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user.jwt_token}`}} icon={button.icon} />
+                <IconButton key={index} onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user?.jwt_token}`}} icon={button.icon} />
               )
             )}
             <IconButton disabled={true} icon={<BsThreeDots />} />
@@ -102,7 +102,7 @@ export default function LinksPage() {
                 <p className="text-sm font-light">{detail.value}</p>
               </div>
               {detail.label !== 'E-mail' && (
-                <button type='button' onClick={() => setNewData(detail.id, null)} className='absolute transition-all -top-2 -right-2 hover:-right-3 hover:-top-3 active:-right-2 active:-top-2'><IoIosCloseCircle className='transition-all size-6 text-violet-300 hover:size-8 active:size-6' /></button>
+                <button type='button' onClick={() => setNewData(detail.id as string, '')} className='absolute transition-all -top-2 -right-2 hover:-right-3 hover:-top-3 active:-right-2 active:-top-2'><IoIosCloseCircle className='transition-all size-6 text-violet-300 hover:size-8 active:size-6' /></button>
               )}
             </div>
           </BlurFade>

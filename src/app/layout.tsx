@@ -26,9 +26,6 @@ const theme = extendTheme({
         background: {
           body: '#101314',
         },
-        primary: {
-          main: '#6a1b9a',
-        },
         text: {
           primary: '#ffffff',
         },

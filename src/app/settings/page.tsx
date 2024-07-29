@@ -6,11 +6,14 @@ import { KeyRound } from "lucide-react";
 import { useAuth, updatePassword } from '@/contexts/AuthProvider';
 import { useState } from "react";
 
+type SnackbarColor = 'neutral' | 'danger';
+const initialSnackbarColor: SnackbarColor = 'neutral';
+
 export default function LinksPage() {
   const { user } = useAuth();
-  
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarColor, setSnackbarColor] = useState("neutral");
+  const [snackbarColor, setSnackbarColor] = useState<SnackbarColor>(initialSnackbarColor);
   const [snackbarText, setSnackbarText] = useState('Your password successfuly changed.');
 
   const [password, setPassword] = useState('');
@@ -28,14 +31,14 @@ export default function LinksPage() {
     }
 
     try {
-      await updatePassword(password, user.jwt_token);
+      await updatePassword(password, user?.jwt_token);
       setSnackbarText('Your password successfuly changed.');
-      setSnackbarColor("neutral");
+      setSnackbarColor("neutral" as SnackbarColor);
       setOpenSnackbar(true);
     } catch (err) {
       console.log(err);
       setSnackbarText('An unexpected error occurred.');
-      setSnackbarColor("danger");
+      setSnackbarColor("danger" as SnackbarColor);
       setOpenSnackbar(true);
     } finally {
       setPassword('');

@@ -1,7 +1,5 @@
 "use client";
 import { useAuth } from '@/contexts/AuthProvider';
-import { MagicCard } from "@/components/magicui/magic-card";
-import IconButton from "@/components/IconButton";
 import { FaDiscord, FaGithub, FaGoogle, FaTwitch } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md"
 import { IoIosCloseCircle } from "react-icons/io"
@@ -79,10 +77,22 @@ export default function LinksPage() {
           <div className="flex overflow-x-auto space-x-2 mt-2">
             {iconButtons.map((button, index) =>
               button.condition && (
-                <IconButton key={index} onClick={() => {window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user?.jwt_token}`}} icon={button.icon} />
+                <button
+                  disabled={true}
+                  key={index}
+                  onClick={() => { window.location.href = `https://api.screwltd.com/v3/auth/other/${button.id}?redirect=account&token=${user?.jwt_token}` }}
+                  className={`cursor-pointer p-2 rounded-full bg-white/10 text-white hover:bg-white/30`}
+                >
+                  {button.icon}
+                </button>
               )
             )}
-            <IconButton disabled={true} icon={<BsThreeDots />} />
+            <button
+              disabled={true}
+              className={`p-2 rounded-full bg-white/10 text-white hover:bg-white/30`}
+            >
+              <BsThreeDots />
+            </button>
           </div>
         </div>
       </BlurFade>

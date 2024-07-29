@@ -77,7 +77,7 @@ export default function LinksPage() {
             )}
           >
             <KeyRound className='absolute size-24 opacity-10 ml-[-36px] -rotate-[90deg] pointer-events-none' />
-            <Tooltip title="Type" variant="soft" placement="top">
+            <Tooltip title="Type" variant="soft" placement="top-start">
               <Typography sx={{ width: '20%', textAlign: 'left' }} level="title-md">{key.type}</Typography>
             </Tooltip>
             <Tooltip title="Key" variant="soft" placement="top">
@@ -85,7 +85,7 @@ export default function LinksPage() {
                 {key.key}
               </Typography>
             </Tooltip>
-            <Tooltip title="Usages" variant="soft" placement="top">
+            <Tooltip title="Usages" variant="soft" placement="top-end">
               <Typography sx={{ width: '20%', textAlign: 'right' }} level="title-md">
                 {key.usages != 0 ? (
                   <NumberTicker value={key.usages} />

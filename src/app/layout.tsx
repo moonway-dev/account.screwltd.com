@@ -110,6 +110,7 @@ export default function RootLayout({
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <meta name="description" content="SCREW: ID — Your account" />
         <link rel="icon" type="image/x-icon" href="https://screwltd.com/faviconMain.ico" />
+        <link rel="shortcut icon" href="https://screwltd.com/faviconMain.ico" />
       </head>
       <body
         className={cn(

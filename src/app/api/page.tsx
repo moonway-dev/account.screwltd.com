@@ -8,7 +8,7 @@ import { KeyRound } from "lucide-react";
 import NumberTicker from "@/components/magicui/number-ticker";
 import { useState } from "react";
 
-export default function LinksPage() {
+export default function ApiPage() {
   const { user, setNewData, fetchUserKeys } = useAuth();
 
   const [selectedApiType, setSelectedApiType] = useState('');

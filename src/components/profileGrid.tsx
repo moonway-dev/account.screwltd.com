@@ -62,7 +62,7 @@ const features = [
         Icon: BellIcon,
         name: "Notifications",
         description: "Get notified when something happens.",
-        href: "/",
+        href: "/notifications",
         cta: "Notifications",
         className: "col-span-3 lg:col-span-2",
         background: (

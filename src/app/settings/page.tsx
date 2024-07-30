@@ -9,7 +9,7 @@ import { useState } from "react";
 type SnackbarColor = 'neutral' | 'danger';
 const initialSnackbarColor: SnackbarColor = 'neutral';
 
-export default function LinksPage() {
+export default function SettingsPage() {
   const { user } = useAuth();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);

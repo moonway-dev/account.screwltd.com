@@ -15,6 +15,9 @@ const formatDate = (dateTimeString: string): string => {
 export default function NotificationsPage() {
   const { user } = useAuth();
 
+  if(!user)
+    return (<div/>);
+
   return (<>
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <BlurFade delay={0.05}>

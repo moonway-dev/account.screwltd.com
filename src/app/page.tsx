@@ -78,7 +78,7 @@ export default function Profile() {
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <input
         type="file"
-        accept="image/png"
+        accept="image/*"
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}

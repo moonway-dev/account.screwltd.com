@@ -78,7 +78,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         if (searchParams) {
             checkToken();
         }
-    }, [searchParams, user, fetchUserProfile]);
+    }, [searchParams]);
 
     const setNewData = async (row: string, data: string) => {
         try {

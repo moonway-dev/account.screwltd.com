@@ -57,12 +57,12 @@ export default function ApiPage() {
         >
           <Typography level="title-md" sx={{ mb: 1 }}>Create new API key</Typography>
           <Stack direction='row'>
-            <Select value={selectedApiType} onChange={handleChangeApiType} sx={{ width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.05)', borderRadius: '10px', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' } }} placeholder="Choose one…" variant="plain">
+            <Select value={selectedApiType} onChange={handleChangeApiType} sx={{ width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.05)', borderRadius: '25px', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' } }} placeholder="Choose one…" variant="plain">
               <Option value="AI">AI</Option>
               <Option disabled value="CLOUD">Cloud</Option>
               <Option disabled value="PAYMENT">Payment</Option>
             </Select>
-            <Button onClick={() => createKey()} sx={{ ml: 1, marginY: 0.05, borderRadius: '10px' }}>Create</Button>
+            <Button onClick={() => createKey()} sx={{ ml: 1, marginY: 0.05, borderRadius: 250 }}>Create</Button>
           </Stack>
         </div>
       </BlurFade>

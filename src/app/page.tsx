@@ -134,7 +134,7 @@ export default function Profile() {
               <FaPen />
             </button>
           </div>
-          <p className='font-light text-xs'>{user?.role}</p>
+          <p className='font-light text-xs'>@{user?.usertag}</p>
         </div>
       </BlurFade>
 

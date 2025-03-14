@@ -10,11 +10,12 @@ type SnackbarColor = 'neutral' | 'danger';
 const initialSnackbarColor: SnackbarColor = 'neutral';
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const { user, setNewData } = useAuth();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarColor, setSnackbarColor] = useState<SnackbarColor>(initialSnackbarColor);
   const [snackbarText, setSnackbarText] = useState('Your password successfuly changed.');
+  const [checked, setChecked] = useState(user == null ? true : user.collectData);
 
   const [password, setPassword] = useState('');
   const handlePasswordChange = (e: any) => {
@@ -45,6 +46,11 @@ export default function SettingsPage() {
     }
   };
 
+  const handleSwitch = (event: any) => { 
+    setChecked(event.target.checked);
+    setNewData('collectData', event.target.checked);
+  };
+
   return (<>
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <BlurFade delay={0.05}>
@@ -63,8 +69,8 @@ export default function SettingsPage() {
             <Stack spacing={1}>
               <Typography level="title-sm">Password</Typography>
               <Stack direction='row' spacing={1}>
-                <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '10px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder="Enter new password..." />
-                <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: '10px' }}>Save</Button>
+                <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '25px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder="Enter new password..." />
+                <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
               </Stack>
             </Stack>
             <div className="py-2">
@@ -74,7 +80,7 @@ export default function SettingsPage() {
 
             <Stack direction='row' spacing={1}>
               <Typography sx={{ width: '100%' }}>Save sent attributes</Typography>
-              <Switch disabled checked />
+              <Switch checked={checked} onChange={handleSwitch}/>
             </Stack>
           </Stack>
         </div>

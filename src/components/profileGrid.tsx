@@ -25,7 +25,7 @@ const features = [
         name: "Save your files",
         description: "Get storage API key now.",
         href: "/api",
-        cta: "API",
+        cta: "Developer Portal",
         className: "col-span-3 lg:col-span-1",
         background: (
             <Marquee

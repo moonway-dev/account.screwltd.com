@@ -9,7 +9,11 @@ import { cn } from '@/lib/utils';
 
 const maskEmail = (email: string) => {
   const [username, domain] = email.split('@');
-  const maskedUsername = username[0] + '******';
+  let maskedUsername = username[0]; 
+  for (let i = 0; i < username.length - 2; i++) {
+    maskedUsername += '*';
+  }
+  maskedUsername += username[username.length - 1];
   return `${maskedUsername}@${domain}`;
 };
 
@@ -88,7 +92,7 @@ export default function LinksPage() {
             )}
             <button
               disabled={true}
-              className={`p-2 rounded-full bg-white/10 text-white hover:bg-white/30`}
+              className={`p-2 rounded-full bg-white/5 text-white`}
             >
               <BsThreeDots />
             </button>

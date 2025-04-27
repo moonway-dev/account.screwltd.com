@@ -81,6 +81,38 @@ const theme = extendTheme({
         },
       },
     },
+    JoyTextarea: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
+          borderColor: '#4a1680',
+          transition: 'border-color 0.3s',
+          '--Textarea-focusedHighlight': 'rgba(0,0,0,.0)',
+          '--Textarea-focusedThickness': '0rem',
+          '&:hover': {
+            borderColor: '#7b1fa2',
+          },
+          '&:focus': {
+            outline: 'none',
+          },
+          '&.Mui-focused': {
+            outline: 'none',
+            borderColor: '#8e24aa',
+          },
+          '&.MuiInputBase-root': {
+            '& fieldset': {
+              borderColor: '#6a1b9a',
+            },
+            '&:hover fieldset': {
+              borderColor: '#7b1fa2',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#8e24aa',
+            },
+          },
+        },
+      },
+    },
     JoyButton: {
       styleOverrides: {
         root: {

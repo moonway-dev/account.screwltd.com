@@ -685,7 +685,7 @@ export default function ApiPage() {
                                       <Typography level="title-sm" className="mb-2">OAuth URL</Typography>
                                       <Typography level="body-sm" className="font-mono break-all">
                                         {editingApp?.oauth?.enabled && editingApp?.oauth?.redirectUri ? 
-                                          `https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.key}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(' ')}` :
+                                          `https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.key}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}` :
                                           'Enable OAuth and set redirect URI to generate URL'
                                         }
                                       </Typography>

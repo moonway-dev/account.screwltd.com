@@ -55,10 +55,6 @@ export default function ApiPage() {
     }
   });
 
-  useEffect(() => {
-    fetchApplications();
-  }, []);
-
   const fetchApplications = async () => {
     try {
       setLoading(true);
@@ -72,7 +68,6 @@ export default function ApiPage() {
         description: app.description
       }));
 
-      // Sort applications alphabetically by name
       const sortedApps = transformedApps.sort((a: Application, b: Application) => 
         a.name.localeCompare(b.name)
       );
@@ -85,6 +80,10 @@ export default function ApiPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
 
   const handleCreateApp = async () => {
     try {
@@ -235,7 +234,7 @@ export default function ApiPage() {
                     <img
                       src={app.avatar}
                       alt={app.name}
-                      className="w-full h-full rounded-[20px] object-cover transition-transform duration-200 group-hover:scale-90"
+                      className="rounded-[20px] object-cover transition-transform duration-200 group-hover:scale-90 w-full h-full"
                     />
                     <div className="absolute inset-0 rounded-[20px] bg-black/40 group-hover:bg-black/20 transition-colors duration-200" />
                   </div>
@@ -443,8 +442,10 @@ export default function ApiPage() {
                     <div className="flex flex-col md:flex-row gap-8 flex-grow">
                       <div className={isMobile ? "flex flex-col items-center gap-4 md:w-1/3" : "flex flex-col items-left gap-4 md:w-1/3"}>
                         <img
-                          src={editingApp?.avatar}
-                          alt={editingApp?.name}
+                          src={editingApp?.avatar || ''}
+                          alt={editingApp?.name || ''}
+                          width={192}
+                          height={192}
                           className="w-48 h-48 rounded-[20px] object-cover"
                         />
                       </div>
@@ -533,7 +534,7 @@ export default function ApiPage() {
                                     sx={{ borderRadius: '20px' }}
                                   />
                                   <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                    Your application's icon (requires company URL approval)
+                                    Your application&apos;s icon (requires company URL approval)
                                   </Typography>
                                 </FormControl>
                                 <FormControl className="mt-4">
@@ -556,7 +557,7 @@ export default function ApiPage() {
                                       {editingApp?.key}
                                     </Typography>
                                     <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Your application's unique API key
+                                      Your application&apos;s unique API key
                                     </Typography>
                                   </FormControl>
                                   <FormControl className="mt-4">

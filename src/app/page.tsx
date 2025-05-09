@@ -102,7 +102,10 @@ export default function Profile() {
             )}
 
             <img
-              src={user?.avatar}
+              src={user?.avatar || ''}
+              alt={`${user?.username}'s avatar`}
+              width={100}
+              height={100}
               onLoad={() => setLoadingImg(false)}
               onError={() => setLoadingImg(false)}
               className="w-[100px] h-[100px] max-w-[100px] max-h-[100px] object-cover mb-2 rounded-full transition-transform duration-300 ease-in-out"

@@ -510,7 +510,7 @@ export default function ApiPage() {
                               <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6">
                                 <Typography level="h4" className="mb-4">Application Settings</Typography>
                                 <Typography level="body-sm" className="mb-6 text-gray-500 dark:text-gray-400 pb-4">
-                                  Configure your application's basic settings and information.
+                                  Configure your application&apos;s basic settings and information.
                                 </Typography>
                                 <FormControl>
                                   <FormLabel>Name</FormLabel>
@@ -648,7 +648,7 @@ export default function ApiPage() {
                                           <div>
                                             <Typography level="body-sm">Identify</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user's usertag and flags
+                                              Allows access to user&apos;s usertag and flags
                                             </Typography>
                                           </div>
                                         </Option>
@@ -656,7 +656,7 @@ export default function ApiPage() {
                                           <div>
                                             <Typography level="body-sm">Email</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user's email address
+                                              Allows access to user&apos;s email address
                                             </Typography>
                                           </div>
                                         </Option>
@@ -664,7 +664,7 @@ export default function ApiPage() {
                                           <div>
                                             <Typography level="body-sm">Profile</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user's profile information including name, avatar, and bio
+                                              Allows access to user&apos;s profile information including name, avatar, and bio
                                             </Typography>
                                           </div>
                                         </Option>
@@ -672,7 +672,7 @@ export default function ApiPage() {
                                           <div>
                                             <Typography level="body-sm">Connections</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user's connected accounts and services
+                                              Allows access to user&apos;s connected accounts and services
                                             </Typography>
                                           </div>
                                         </Option>

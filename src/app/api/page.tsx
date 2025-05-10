@@ -676,6 +676,14 @@ export default function ApiPage() {
                                             </Typography>
                                           </div>
                                         </Option>
+                                        <Option value="token">
+                                          <div>
+                                            <Typography level="body-sm">Token</Typography>
+                                            <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
+                                              Passes user token for SCREW: API calls
+                                            </Typography>
+                                          </div>
+                                        </Option>
                                       </Select>
                                       <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
                                         Select the permissions your application needs

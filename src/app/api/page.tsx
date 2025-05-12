@@ -554,6 +554,15 @@ export default function ApiPage() {
                                 <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
                                   <Typography level="title-sm" className="mb-2">Application Credentials</Typography>
                                   <FormControl>
+                                    <FormLabel>APP ID</FormLabel>
+                                    <Typography level="body-sm" className="font-mono break-all">
+                                      {editingApp?.id}
+                                    </Typography>
+                                    <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
+                                      Your application&apos;s unique app id
+                                    </Typography>
+                                  </FormControl>
+                                  <FormControl>
                                     <FormLabel>API Key</FormLabel>
                                     <Typography level="body-sm" className="font-mono break-all">
                                       {editingApp?.key}

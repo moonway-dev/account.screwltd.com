@@ -2,7 +2,7 @@
 
 import BlurFade from "@/components/magicui/blur-fade";
 import { cn } from "@/lib/utils";
-import { Select, Tooltip, Option, Stack, Button, Typography, Input, Textarea, Modal, ModalDialog, ModalClose, FormControl, FormLabel, IconButton, Box, useTheme, CircularProgress, Switch, Tabs, TabList, Tab, TabPanel } from '@mui/joy';
+import { Select, Tooltip, Option, Stack, Button, Typography, Input, Textarea, Modal, ModalDialog, ModalClose, FormControl, FormLabel, IconButton, Box, useTheme, CircularProgress, Switch, Tabs, TabList, Tab, TabPanel, Link } from '@mui/joy';
 import { useAuth } from '../../contexts/AuthProvider';
 import { KeyRound, Plus, X } from "lucide-react";
 import NumberTicker from "@/components/magicui/number-ticker";
@@ -70,7 +70,7 @@ export default function ApiPage() {
         description: app.description
       }));
 
-      const sortedApps = transformedApps.sort((a: Application, b: Application) => 
+      const sortedApps = transformedApps.sort((a: Application, b: Application) =>
         a.name.localeCompare(b.name)
       );
 
@@ -167,7 +167,7 @@ export default function ApiPage() {
       try {
         setSaving(true);
         setError(null);
-        
+
         const updates = {
           name: editingApp.name,
           description: editingApp.description,
@@ -508,7 +508,7 @@ export default function ApiPage() {
                             <Tab disableIndicator value="general">General</Tab>
                             <Tab disableIndicator value="oauth">OAuth</Tab>
                           </TabList>
-                          <TabPanel sx={{px: 0}} value="general">
+                          <TabPanel sx={{ px: 0 }} value="general">
                             <Stack spacing={3}>
                               <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6">
                                 <Typography level="h4" className="mb-4">Application Settings</Typography>
@@ -563,7 +563,7 @@ export default function ApiPage() {
                                       Your application&apos;s unique app id
                                     </Typography>
                                   </FormControl>
-                                  <FormControl>
+                                  <FormControl className="mt-4">
                                     <FormLabel>API Key</FormLabel>
                                     <Typography level="body-sm" className="font-mono break-all">
                                       {editingApp?.key}
@@ -587,7 +587,7 @@ export default function ApiPage() {
                               </div>
                             </Stack>
                           </TabPanel>
-                          <TabPanel sx={{px: 0}}  value="oauth">
+                          <TabPanel sx={{ px: 0 }} value="oauth">
                             <Stack spacing={3}>
                               <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6">
                                 <Typography level="h4" className="mb-4">OAuth 2.0 Configuration</Typography>
@@ -703,12 +703,15 @@ export default function ApiPage() {
                                     </FormControl>
                                     <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
                                       <Typography level="title-sm" className="mb-2">OAuth URL</Typography>
-                                      <Typography level="body-sm" className="font-mono break-all">
-                                        {editingApp?.oauth?.enabled && editingApp?.oauth?.redirectUri ? 
-                                          `https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}` :
-                                          'Enable OAuth and set redirect URI to generate URL'
-                                        }
-                                      </Typography>
+                                      {editingApp?.oauth?.enabled && editingApp?.oauth?.redirectUri ? (
+                                        <Link level="body-sm" className="font-mono break-all">
+                                          {`https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}`}
+                                        </Link>
+                                      ) : (
+                                        <Typography level="body-sm" className="font-mono break-all">
+                                          Enable OAuth and set redirect URI to generate URL
+                                        </Typography>
+                                      )}
                                       <Typography level="body-xs" className="mt-2 text-gray-500 dark:text-gray-400">
                                         Use this URL to initiate the OAuth flow in your application
                                       </Typography>
@@ -726,8 +729,9 @@ export default function ApiPage() {
               </ModalDialog>
             </div>
           </Modal>
-        )}
-      </Transition>
-    </main>
+        )
+        }
+      </Transition >
+    </main >
   );
 }

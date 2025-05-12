@@ -13,6 +13,7 @@ import { useMedia } from "react-use";
 import axios from 'axios';
 
 interface Application {
+  id: string;
   key: string;
   usages: number;
   name: string;
@@ -103,6 +104,7 @@ export default function ApiPage() {
 
       // Add the new application to the list
       const newApplication: Application = {
+        id: response.data.id,
         key: response.data.key,
         usages: 0,
         name: newApp.name || 'Application',
@@ -693,7 +695,7 @@ export default function ApiPage() {
                                       <Typography level="title-sm" className="mb-2">OAuth URL</Typography>
                                       <Typography level="body-sm" className="font-mono break-all">
                                         {editingApp?.oauth?.enabled && editingApp?.oauth?.redirectUri ? 
-                                          `https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.key}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}` :
+                                          `https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}` :
                                           'Enable OAuth and set redirect URI to generate URL'
                                         }
                                       </Typography>

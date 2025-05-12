@@ -63,6 +63,7 @@ export default function ApiPage() {
 
       const transformedApps = user?.keys.map((app: any) => ({
         key: app.key,
+        id: app.id,
         usages: app.usages || 0,
         name: app.name,
         avatar: app.avatar || 'https://placehold.co/256x256',

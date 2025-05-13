@@ -485,6 +485,7 @@ export default function ApiPage() {
                           value={activeTab}
                           onChange={(_, value) => setActiveTab(value as string)}
                           sx={{
+                            scrollbarWidth: 'none',
                             '--Tabs-gap': '0px',
                             '--TabPanel-padding': '24px 0 0 0',
                             '--TabList-radius': '20px',

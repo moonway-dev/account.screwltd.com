@@ -4,13 +4,14 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { cn } from "@/lib/utils";
 import { Select, Tooltip, Option, Stack, Button, Typography, Input, Textarea, Modal, ModalDialog, ModalClose, FormControl, FormLabel, IconButton, Box, useTheme, CircularProgress, Switch, Tabs, TabList, Tab, TabPanel, Link } from '@mui/joy';
 import { useAuth } from '../../contexts/AuthProvider';
-import { KeyRound, Plus, X } from "lucide-react";
+import { KeyRound, Plus, X, Copy, Check } from "lucide-react";
 import NumberTicker from "@/components/magicui/number-ticker";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { Transition } from 'react-transition-group';
 import { useMedia } from "react-use";
 import axios from 'axios';
+import { MdDataUsage } from "react-icons/md";
 
 interface Application {
   id: string;
@@ -36,7 +37,7 @@ const transitionStyles = {
 
 export default function ApiPage() {
   const { user } = useAuth();
-  const isMobile = useMedia(`(max-width: ${useTheme().breakpoints.values.sm}px)`)
+  const isMobile = useMedia(`(max-width: ${useTheme().breakpoints.values.md}px)`)
   const [open, setOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [editingApp, setEditingApp] = useState<Application | null>(null);
@@ -413,11 +414,12 @@ export default function ApiPage() {
                   padding: '2rem',
                   overflow: 'auto',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  border: "none"
                 }}
               >
                 {selectedApp && (
-                  <div className="flex flex-col h-full overflow-auto">
+                  <div className="flex flex-col h-full">
                     <div className="flex justify-between items-center mb-6">
                       <Typography level="h3">{editingApp?.name}</Typography>
                       <div className="flex gap-2">
@@ -442,17 +444,42 @@ export default function ApiPage() {
                         </IconButton>
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row gap-8 flex-grow">
-                      <div className={isMobile ? "flex flex-col items-center gap-4 md:w-1/3" : "flex flex-col items-left gap-4 md:w-1/3"}>
-                        <img
-                          src={editingApp?.avatar || ''}
-                          alt={editingApp?.name || ''}
-                          width={192}
-                          height={192}
-                          className="w-48 h-48 rounded-[20px] object-cover"
-                        />
+                    <div className="flex flex-col md:flex-row gap-8 h-[calc(100vh-8rem)]">
+                      <div className={cn(
+                        "flex flex-col items-left gap-6 md:w-1/3 p-8 rounded-[24px]",
+                        "backdrop-blur-sm bg-white/50 dark:bg-black/50",
+                        "border border-purple-100/20 dark:border-purple-900/20",
+                        "md:sticky md:top-0 md:self-start"
+                      )}>
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-[24px] blur-xl" />
+                          <img
+                            src={editingApp?.avatar || ''}
+                            alt={editingApp?.name || ''}
+                            width={192}
+                            height={192}
+                            style={{borderRadius: "24px"}}
+                            className="relative w-48 h-48 rounded-[24px] object-cover shadow-lg"
+                          />
+                        </div>
+                        <div className="text-left space-y-3">
+                          <div className="space-y-1">
+                            <Typography level="h4" className="font-medium tracking-tight bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                              {editingApp?.name}
+                            </Typography>
+                            <Typography level="body-sm" className="text-gray-500 dark:text-gray-400 tracking-wide">
+                            {editingApp?.description || "No information..."}
+                            </Typography>
+                          </div>
+                          <div className="flex items-center gap-2 pt-2">
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 dark:bg-purple-950/50">
+                              <NumberTicker value={editingApp?.usages || 0} className="text-purple-600 dark:text-purple-400" />
+                              <MdDataUsage className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex-grow">
+                      <div className="flex-grow overflow-y-auto pr-2">
                         <Tabs
                           defaultValue="general"
                           value={activeTab}
@@ -491,6 +518,7 @@ export default function ApiPage() {
                             '--Tab-disabledActiveBackground': 'transparent',
                             '--Tab-disabledActiveColor': 'rgba(0 0 0 / 0.3)',
                             '--Tab-disabledActiveShadow': 'none',
+                            width: isMobile ? '100%' : '60vw',
                             px: 0,
                             '& .MuiTabs-indicator': {
                               display: 'none'
@@ -503,14 +531,21 @@ export default function ApiPage() {
                               borderRadius: '20px',
                               p: 0.5,
                               bgcolor: 'background.level1',
+                              display: 'flex',
+                              '& .MuiTab-root': {
+                                flex: 1,
+                                minWidth: 0,
+                                maxWidth: 'none',
+                                width: '50%'
+                              }
                             }}
                           >
                             <Tab disableIndicator value="general">General</Tab>
                             <Tab disableIndicator value="oauth">OAuth</Tab>
                           </TabList>
-                          <TabPanel sx={{ px: 0 }} value="general">
-                            <Stack spacing={3}>
-                              <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6">
+                          <TabPanel sx={{ px: 0, width: '100%' }} value="general">
+                            <Stack spacing={3} sx={{ width: '100%' }}>
+                              <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6 w-full">
                                 <Typography level="h4" className="mb-4">Application Settings</Typography>
                                 <Typography level="body-sm" className="mb-6 text-gray-500 dark:text-gray-400 pb-4">
                                   Configure your application&apos;s basic settings and information.
@@ -556,40 +591,51 @@ export default function ApiPage() {
                                   <Typography level="title-sm" className="mb-2">Application Credentials</Typography>
                                   <FormControl>
                                     <FormLabel>APP ID</FormLabel>
-                                    <Typography level="body-sm" className="font-mono break-all">
-                                      {editingApp?.id}
-                                    </Typography>
+                                    <div
+                                      onClick={() => {
+                                        if (editingApp?.id) {
+                                          navigator.clipboard.writeText(editingApp.id);
+                                        }
+                                      }}
+                                      className="font-mono font-mono text-sm cursor-pointer">
+                                      <span className="block opacity-100">
+                                        {editingApp?.id}
+                                      </span>
+                                    </div>
                                     <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Your application&apos;s unique id
+                                      Your application&apos;s unique id (click to copy)
                                     </Typography>
                                   </FormControl>
                                   <FormControl className="mt-4">
                                     <FormLabel>API Key</FormLabel>
-                                    <Typography level="body-sm" className="font-mono break-all">
-                                      {editingApp?.key}
-                                    </Typography>
+                                    <div className="flex items-center gap-2 group">
+                                      <div
+                                        className="relative font-mono text-sm cursor-pointer"
+                                        onClick={() => {
+                                          if (editingApp?.key) {
+                                            navigator.clipboard.writeText(editingApp.key);
+                                          }
+                                        }}
+                                      >
+                                        <span className="block opacity-100 group-hover:opacity-0 transition-opacity duration-200">
+                                          {editingApp?.key ? `scr-${'*'.repeat(32)}` : ''}
+                                        </span>
+                                        <span className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                          {editingApp?.key}
+                                        </span>
+                                      </div>
+                                    </div>
                                     <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Your application&apos;s unique API key
-                                    </Typography>
-                                  </FormControl>
-                                  <FormControl className="mt-4">
-                                    <FormLabel>API Usage</FormLabel>
-                                    {editingApp?.usages != 0 ? (
-                                      <NumberTicker value={editingApp?.usages || 0} />
-                                    ) : (
-                                      <Typography level="body-sm">0</Typography>
-                                    )}
-                                    <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Total number of API calls made with this key
+                                      Your application&apos;s unique API key (click to copy)
                                     </Typography>
                                   </FormControl>
                                 </div>
                               </div>
                             </Stack>
                           </TabPanel>
-                          <TabPanel sx={{ px: 0 }} value="oauth">
-                            <Stack spacing={3}>
-                              <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6">
+                          <TabPanel sx={{ px: 0, width: '100%' }} value="oauth">
+                            <Stack spacing={3} sx={{ width: '100%' }}>
+                              <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6 w-full">
                                 <Typography level="h4" className="mb-4">OAuth 2.0 Configuration</Typography>
                                 <Typography level="body-sm" className="mb-6 text-gray-500 dark:text-gray-400 pb-4">
                                   Configure OAuth 2.0 settings for your application. This will allow users to authenticate with your application using their SCREW: ID account.
@@ -598,7 +644,8 @@ export default function ApiPage() {
                                   <FormLabel>Enable OAuth</FormLabel>
                                   <div className="flex items-center">
                                     <Switch
-                                      checked={editingApp?.oauth?.enabled || false}
+                                      disabled
+                                      checked={editingApp?.oauth?.enabled || true}
                                       onChange={(e) => editingApp && handleUpdateApp({
                                         ...editingApp,
                                         oauth: {
@@ -610,7 +657,7 @@ export default function ApiPage() {
                                     />
                                   </div>
                                 </FormControl>
-                                {editingApp?.oauth?.enabled && (
+                                {editingApp?.oauth?.enabled || true && (
                                   <>
                                     <FormControl className="mt-4">
                                       <FormLabel>Redirect URI</FormLabel>
@@ -729,8 +776,7 @@ export default function ApiPage() {
               </ModalDialog>
             </div>
           </Modal>
-        )
-        }
+        )}
       </Transition >
     </main >
   );

@@ -750,7 +750,7 @@ export default function ApiPage() {
                                     </FormControl>
                                     <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
                                       <Typography level="title-sm" className="mb-2">OAuth URL</Typography>
-                                      {editingApp?.oauth?.enabled && editingApp?.oauth?.redirectUri ? (
+                                      {(editingApp?.oauth?.enabled || true) && editingApp?.oauth?.redirectUri ? (
                                         <Link level="body-sm" onClick={() => window.open(`https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp?.oauth?.redirectUri ? editingApp.oauth.redirectUri : 'https://auth.screwltd.com/')}&scope=${(editingApp?.oauth?.scopes || []).join(',')}`, '_blank')} underline="none" className="font-mono break-all">
                                           {`https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}`}
                                         </Link>

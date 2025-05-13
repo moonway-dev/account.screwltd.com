@@ -589,7 +589,7 @@ export default function ApiPage() {
                                 </FormControl>
                                 <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
                                   <Typography level="title-sm" className="mb-2">Application Credentials</Typography>
-                                  <FormControl>
+                                  <FormControl className="mt-4">
                                     <FormLabel>APP ID</FormLabel>
                                     <div
                                       onClick={() => {
@@ -607,7 +607,7 @@ export default function ApiPage() {
                                     </Typography>
                                   </FormControl>
                                   <FormControl className="mt-4">
-                                    <FormLabel>API Key</FormLabel>
+                                    <FormLabel>API KEY</FormLabel>
                                     <div className="flex items-center gap-2 group">
                                       <div
                                         className="relative font-mono text-sm cursor-pointer"

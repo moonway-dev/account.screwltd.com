@@ -5,12 +5,14 @@ import { Switch, Stack, Input, Button, Typography, Divider, Snackbar } from "@mu
 import { KeyRound } from "lucide-react";
 import { useAuth, updatePassword } from '@/contexts/AuthProvider';
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type SnackbarColor = 'neutral' | 'danger';
 const initialSnackbarColor: SnackbarColor = 'neutral';
 
 export default function SettingsPage() {
   const { user, setNewData } = useAuth();
+  const router = useRouter();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarColor, setSnackbarColor] = useState<SnackbarColor>(initialSnackbarColor);
@@ -72,6 +74,14 @@ export default function SettingsPage() {
                 <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '25px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder="Enter new password..." />
                 <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
               </Stack>
+            </Stack>
+            <div className="py-2">
+              <Divider />
+            </div>
+            <Typography level="title-lg">Location</Typography>
+            <Stack direction='row' spacing={1}>
+              <Typography sx={{ width: '100%' }}>Current country: <b>{user?.country}</b></Typography>
+              <Button onClick={() => router.push('/wizard/region')} sx={{ borderRadius: 250 }}>Change</Button>
             </Stack>
             <div className="py-2">
               <Divider />

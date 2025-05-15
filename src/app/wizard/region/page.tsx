@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react';
 
 interface IPResponse {
   country: string;
-  countryCode: string;
-  region: string;
+  currency_code: string;
+  state: string;
   city: string;
 }
 
@@ -29,9 +29,9 @@ export default function ChangeCountryPage() {
     useEffect(() => {
         const fetchUserLocation = async () => {
             try {
-                const response = await fetch('http://ip-api.com/json/');
+                const response = await fetch('https://api.ipapi.is/?');
                 const data = await response.json();
-                setUserLocation(data);
+                setUserLocation(data.location);
             } catch (error) {
                 console.error('Error fetching user location:', error);
             } finally {

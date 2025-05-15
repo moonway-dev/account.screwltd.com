@@ -20,7 +20,7 @@ interface IPResponse {
 export default function ChangeCountryPage() {
     const router = useRouter();
     const isMobile = useMedia(`(max-width: ${useTheme().breakpoints.values.md}px)`);
-    const { user, setNewData } = useAuth();
+    const { user, setNewData, updateCountry } = useAuth();
     const [userLocation, setUserLocation] = useState<IPResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
@@ -68,12 +68,9 @@ export default function ChangeCountryPage() {
             setApiMessage(data.message || 'Country updated successfully');
             
             // Update local user data
-            setNewData('country', userLocation.country);
-            
-            // Redirect to main page after 2 seconds
-            setTimeout(() => {
-                router.push('/');
-            }, 2000);
+            updateCountry(userLocation.country);
+        
+            router.push('/settings');
         } catch (error: any) {
             console.error('Error updating country:', error);
             setApiMessage(error.message || 'Failed to update country');

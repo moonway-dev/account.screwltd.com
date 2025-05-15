@@ -10,6 +10,7 @@ interface AuthContextType {
     user: Record<string, any> | null;
     loading: boolean;
     setNewData: (row: string, data: string) => Promise<void>;
+    updateCountry: (country: string) => void;
     fetchUserKeys: (token: string) => Promise<void>;
 }
 
@@ -80,6 +81,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }, [searchParams, fetchUserProfile, user]);
 
+    const updateCountry = (country: string) => {
+        setUser(prevUser => ({
+            ...prevUser,
+            country: country,
+        }));
+    };
+
     const setNewData = async (row: string, data: string) => {
         try {
             const editResponse = await fetch('https://api.screwltd.com/v3/auth/update/me', {
@@ -108,7 +116,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         try {
             setUser(prevUser => ({
                 ...prevUser,
-                keys: null, 
+                keys: null,
             }));
 
             const response = await fetch('https://api.screwltd.com/v3/keys/get', {
@@ -130,7 +138,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys }}>
+        <AuthContext.Provider value={{ user, loading, setNewData, fetchUserKeys, updateCountry }}>
             {loading || !user ? (
                 <>
                     <GridPattern

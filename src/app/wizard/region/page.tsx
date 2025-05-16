@@ -11,10 +11,10 @@ import { useAuth } from '@/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
 
 interface IPResponse {
-  country: string;
-  currency_code: string;
-  state: string;
-  city: string;
+    country: string;
+    currency_code: string;
+    state: string;
+    city: string;
 }
 
 export default function ChangeCountryPage() {
@@ -48,7 +48,7 @@ export default function ChangeCountryPage() {
 
     const handleChangeCountry = async () => {
         if (!userLocation?.country) return;
-        
+
         try {
             setUpdating(true);
             setApiMessage(null);
@@ -66,10 +66,10 @@ export default function ChangeCountryPage() {
             }
 
             setApiMessage(data.message || 'Country updated successfully');
-            
+
             // Update local user data
             updateCountry(userLocation.country);
-        
+
             router.push('/settings');
         } catch (error: any) {
             console.error('Error updating country:', error);
@@ -118,21 +118,23 @@ export default function ChangeCountryPage() {
                                         'Loading location information...'
                                     ) : (
                                         <>
-                                            You are contacting us from <b>{userLocation?.country || 'Unknown'}</b> and your account is registered in <b>{user?.country}</b>.<br/>{userLocation?.country === user?.country ? 'Country is already set.' : 'Do you wish to continue?'}
+                                            You are contacting us from <b>{userLocation?.country || 'Unknown'}</b> and your account is registered in <b>{user?.country}</b>.<br />{userLocation?.country === user?.country ? 'Country is already set.' : 'Do you wish to continue?'}
                                         </>
                                     )}
                                 </Typography>
                             </div>
 
                             {apiMessage && (
-                                <div className={cn(
-                                    "p-4 rounded-[20px]",
-                                    apiMessage.includes('success') ? "bg-green-500/20" : "bg-red-500/20"
-                                )}>
-                                    <Typography level="body-sm" sx={{ color: 'white' }}>
-                                        {apiMessage}
-                                    </Typography>
-                                </div>
+                                <BlurFade delay={0.05}>
+                                    <div className={cn(
+                                        "p-4 rounded-[20px]",
+                                        apiMessage.includes('success') ? "bg-green-500/20" : "bg-red-500/20"
+                                    )}>
+                                        <Typography level="body-sm" sx={{ color: 'white' }}>
+                                            {apiMessage}
+                                        </Typography>
+                                    </div>
+                                </BlurFade>
                             )}
 
                             <div className="pt-4">

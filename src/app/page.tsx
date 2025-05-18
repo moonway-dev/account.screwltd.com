@@ -116,26 +116,9 @@ export default function Profile() {
             </div>
           </div>
           <div className='flex items-center space-x-2'>
-            {isEditing ? (
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="border p-1 rounded-full focus:outline-none mb-1 mt-1"
-              />
-            ) : (
-              <p className='font-normal text-lg' onClick={handleEditClick}>
-                {username}
-              </p>
-            )}
-            <button
-              className='text-neutral-500 hover:text-neutral-700'
-              onClick={handleEditClick}
-              style={{ display: isEditing ? 'none' : 'inline-block' }}
-            >
-              <FaPen />
-            </button>
+            <p className='font-normal text-lg'>
+              {username}
+            </p>
           </div>
           <p className='font-light text-xs'>@{user?.usertag}</p>
         </div>
@@ -145,7 +128,7 @@ export default function Profile() {
         <BentoDemo />
       </BlurFade>
       <BlurFade delay={0.35}>
-        <Typography level='body-xs' sx={{ mt: 2, mb: isMobile? 2 : -4, textAlign: 'center' }}>These settings are visible only to you. SCREW LTD. ensures the protection and confidentiality of your data.</Typography>
+        <Typography level='body-xs' sx={{ mt: 2, mb: isMobile ? 2 : -4, textAlign: 'center' }}>These settings are visible only to you. SCREW LTD. ensures the protection and confidentiality of your data.</Typography>
       </BlurFade>
     </main >
   );

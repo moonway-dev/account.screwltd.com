@@ -100,7 +100,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             });
 
             if (!editResponse.ok) {
-                throw new Error(`Edit failed: ${editResponse.statusText}`);
+                const data = await editResponse.json();
+                throw new Error(data.error || 'Failed to update data');
             }
 
             setUser(prevUser => ({
@@ -109,6 +110,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             }));
         } catch (error) {
             console.error('Error setting new data:', error);
+            throw error;
         }
     };
 

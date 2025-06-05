@@ -119,6 +119,13 @@ const ru = {
     protect_account: 'Защитите аккаунт с помощью наших технологий.',
     settings: 'Настройки',
   },
+  navbar: {
+    profile: 'Профиль',
+    notifications: 'Уведомления',
+    settings: 'Настройки',
+    linked_accounts: 'Связанные аккаунты',
+    developer_portal: 'Портал разработчика',
+  },
 };
 
 export default ru; 

@@ -119,6 +119,13 @@ const en = {
     protect_account: 'Protect your account using our latest technologies.',
     settings: 'Settings',
   },
+  navbar: {
+    profile: 'Profile',
+    notifications: 'Notifications',
+    settings: 'Settings',
+    linked_accounts: 'Linked Accounts',
+    developer_portal: 'Developer Portal',
+  },
 };
 
 export default en; 

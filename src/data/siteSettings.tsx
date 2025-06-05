@@ -1,16 +1,7 @@
 import { Icons } from "@/components/icons";
 import { Link, UserRound, Cog, Bell, CodeXml } from "lucide-react";
-import { useLanguage } from '@/contexts/LanguageContext';
-import en from '@/locales/en';
-import ru from '@/locales/ru';
 
-function useTranslation() {
-  const { language } = useLanguage();
-  return language === 'ru' ? ru : en;
-}
-
-export function getNavbarData() {
-  const t = useTranslation();
+export function getNavbarData(t: any) {
   return [
     { href: "/", icon: UserRound, label: t.navbar.profile },
     { href: "/notifications", icon: Bell, label: t.navbar.notifications },

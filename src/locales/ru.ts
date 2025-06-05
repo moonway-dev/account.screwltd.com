@@ -10,7 +10,7 @@ const ru = {
     current_country: 'Текущая страна',
     change: 'Изменить',
     collect_info: 'Сбор информации',
-    save_attributes: 'Сохранять отправленные атрибуты',
+    save_attributes: 'Сохранять отправленные данные',
     snackbar: {
       username_updated: 'Имя пользователя успешно обновлено.',
       tag_updated: 'Тег успешно обновлён.',

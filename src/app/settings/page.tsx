@@ -179,7 +179,7 @@ export default function SettingsPage() {
                   sx={{ width: '100%', borderRadius: '25px' }} 
                   placeholder={t.settings.username} 
                 />
-                <Button onClick={handleUsernameSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
+                <Button onClick={handleUsernameSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>{t.settings.save}</Button>
               </Stack>
             </Stack>
             <Stack spacing={1}>
@@ -192,14 +192,14 @@ export default function SettingsPage() {
                   startDecorator={<MdAlternateEmail />}
                   placeholder={t.settings.tag}
                 />
-                <Button onClick={handleUserTagSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
+                <Button onClick={handleUserTagSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>{t.settings.save}</Button>
               </Stack>
             </Stack>
             <Stack spacing={1}>
               <Typography level="title-sm">{t.settings.password}</Typography>
               <Stack direction='row' spacing={1}>
                 <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '25px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder={t.settings.password} />
-                <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
+                <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>{t.settings.save}</Button>
               </Stack>
             </Stack>
           </Stack>

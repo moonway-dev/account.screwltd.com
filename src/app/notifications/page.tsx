@@ -4,6 +4,9 @@ import { cn } from "@/lib/utils";
 import { KeyRound } from "lucide-react";
 import { useAuth, updatePassword } from '@/contexts/AuthProvider';
 import { useState } from "react";
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
 
 const formatDate = (dateTimeString: string): string => {
   const datePart = dateTimeString.split('T')[0];
@@ -12,8 +15,14 @@ const formatDate = (dateTimeString: string): string => {
   return formattedDate;
 }
 
+function useTranslation() {
+  const { language } = useLanguage();
+  return language === 'ru' ? ru : en;
+}
+
 export default function NotificationsPage() {
   const { user } = useAuth();
+  const t = useTranslation();
 
   if(!user)
     return (<div/>);
@@ -21,7 +30,7 @@ export default function NotificationsPage() {
   return (<>
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <BlurFade delay={0.05}>
-        <p className='font-medium text-xl mb-4 mt-[-40px]'>SCREW: ID</p>
+        <p className='font-medium text-xl mb-4 mt-[-40px]'>{t.settings.title}</p>
       </BlurFade>
       <BlurFade className="w-full" delay={0.15}>
         <figure
@@ -43,12 +52,12 @@ export default function NotificationsPage() {
             </div>
             <div className="flex flex-col overflow-hidden">
               <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white ">
-                <span className="text-sm sm:text-lg">Hello, {user?.username}</span>
+                <span className="text-sm sm:text-lg">{t.notifications.hello}, {user?.username}</span>
                 <span className="mx-1">·</span>
                 <span className="text-xs text-gray-500">{formatDate(user?.created_at)}</span>
               </figcaption>
               <p className="text-sm font-normal dark:text-white/60">
-                You have successfully registered with SCREW: ID.
+                {t.notifications.success}
               </p>
             </div>
           </div>

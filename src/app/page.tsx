@@ -8,11 +8,20 @@ import { useRef, useState } from 'react';
 import RingLoader from 'react-spinners/RingLoader';
 import { Typography, useTheme } from '@mui/joy';
 import { useMedia } from 'react-use'
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
+
+function useTranslation() {
+  const { language } = useLanguage();
+  return language === 'ru' ? ru : en;
+}
 
 export default function Profile() {
   const { user, setNewData } = useAuth();
   const theme = useTheme()
   const isMobile = useMedia(`(max-width: ${theme.breakpoints.values.sm}px)`)
+  const t = useTranslation();
 
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +93,7 @@ export default function Profile() {
         onChange={handleFileChange}
       />
       <BlurFade delay={0.05}>
-        <p className='font-medium text-xl mb-4 mt-[-40px]'>SCREW: ID</p>
+        <p className='font-medium text-xl mb-4 mt-[-40px]'>{t.settings.title}</p>
       </BlurFade>
       <BlurFade className='w-full' delay={0.15}>
         <div
@@ -128,7 +137,7 @@ export default function Profile() {
         <BentoDemo />
       </BlurFade>
       <BlurFade delay={0.35}>
-        <Typography level='body-xs' sx={{ mt: 2, mb: isMobile ? 2 : -4, textAlign: 'center' }}>These settings are visible only to you. SCREW LTD. ensures the protection and confidentiality of your data.</Typography>
+        <Typography level='body-xs' sx={{ mt: 2, mb: isMobile ? 2 : -4, textAlign: 'center' }}>{t.profile.notice}</Typography>
       </BlurFade>
     </main >
   );

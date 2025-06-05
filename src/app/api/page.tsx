@@ -12,6 +12,9 @@ import { Transition } from 'react-transition-group';
 import { useMedia } from "react-use";
 import axios from 'axios';
 import { MdDataUsage } from "react-icons/md";
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
 
 interface Application {
   id: string;
@@ -35,6 +38,11 @@ const transitionStyles = {
   unmounted: { opacity: 0, transform: 'scale(0.95)', backdropFilter: 'blur(0px)' }
 } as const;
 
+function useTranslation() {
+  const { language } = useLanguage();
+  return language === 'ru' ? ru : en;
+}
+
 export default function ApiPage() {
   const { user } = useAuth();
   const isMobile = useMedia(`(max-width: ${useTheme().breakpoints.values.md}px)`)
@@ -56,6 +64,7 @@ export default function ApiPage() {
       scopes: []
     }
   });
+  const t = useTranslation();
 
   const fetchApplications = async () => {
     try {
@@ -191,14 +200,21 @@ export default function ApiPage() {
     }
   };
 
+  const getOAuthBaseUrl = () => {
+    if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.net')) {
+      return 'https://auth.acceptancegroup.net';
+    }
+    return 'https://auth.screwltd.com';
+  };
+
   return (
     <main className="flex flex-col items-center p-6">
       <div className="w-full max-w-5xl">
         <BlurFade delay={0.05}>
           <div className="flex justify-between items-center w-full mb-8">
             <div>
-              <p className={isMobile ? 'font-medium text-lg mb-1' : 'font-medium text-2xl mb-1'}>SCREW: DEVELOPER</p>
-              <p className="text-gray-500 dark:text-gray-400">{isMobile ? "Manage your applications" : "Manage your applications and API keys"}</p>
+              <p className={isMobile ? 'font-medium text-lg mb-1' : 'font-medium text-2xl mb-1'}>{t.api.title}</p>
+              <p className="text-gray-500 dark:text-gray-400">{isMobile ? t.api.manage_short : t.api.manage_full}</p>
             </div>
             <Button
               startDecorator={<Plus />}
@@ -207,7 +223,7 @@ export default function ApiPage() {
               color="neutral"
               sx={{ borderRadius: '20px', bgcolor: '#8B5CF6', '&:hover': { bgcolor: '#7C3AED' } }}
             >
-              Create {!isMobile && 'Application'}
+              {t.api.create} {!isMobile && t.api.application}
             </Button>
           </div>
         </BlurFade>
@@ -320,10 +336,10 @@ export default function ApiPage() {
               >
                 <ModalClose sx={{ borderRadius: 250 }} />
                 <Typography id="create-application-modal" level="h4">
-                  Create New Application
+                  {t.api.create_new}
                 </Typography>
                 <Typography id="create-application-modal-desc" level="body-sm">
-                  Fill in the details for your new application.
+                  {t.api.fill_details}
                 </Typography>
                 <form
                   onSubmit={(e) => {
@@ -334,17 +350,20 @@ export default function ApiPage() {
                 >
                   <Stack spacing={2}>
                     <FormControl>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t.api.name}</FormLabel>
                       <Input
                         value={newApp.name}
                         onChange={(e) => setNewApp({ ...newApp, name: e.target.value })}
-                        placeholder="Application Name"
+                        placeholder={t.api.name}
                         sx={{ borderRadius: '20px' }}
                       />
+                      <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
+                        {t.api.app_name_desc}
+                      </Typography>
                     </FormControl>
                     <FormControl>
-                      <Tooltip arrow placement="top" color="danger" variant="outlined" title="To install the image, you need to approve your company URL.">
-                        <FormLabel sx={{ color: 'red' }}>Icon</FormLabel>
+                      <Tooltip arrow placement="top" color="danger" variant="outlined" title={t.api.icon_tooltip}>
+                        <FormLabel sx={{ color: 'red' }}>{t.api.icon}</FormLabel>
                       </Tooltip>
                       <Input
                         value={newApp.avatar}
@@ -353,19 +372,25 @@ export default function ApiPage() {
                         placeholder="https://placehold.co/256x256"
                         sx={{ borderRadius: '20px' }}
                       />
+                      <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
+                        {t.api.app_icon_desc}
+                      </Typography>
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>{t.api.description}</FormLabel>
                       <Textarea
                         value={newApp.description || ''}
                         onChange={(e) => setNewApp({ ...newApp, description: e.target.value })}
-                        placeholder="Application Description"
+                        placeholder={t.api.description}
                         minRows={2}
                         sx={{ borderRadius: '20px' }}
                       />
+                      <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
+                        {t.api.app_desc_desc}
+                      </Typography>
                     </FormControl>
                     <Button type="submit" sx={{ mt: 1, borderRadius: '20px' }}>
-                      Create Application
+                      {t.api.create_app}
                     </Button>
                   </Stack>
                 </form>
@@ -431,7 +456,7 @@ export default function ApiPage() {
                           loading={saving}
                           disabled={saving}
                         >
-                          Save {!isMobile && 'Changes'}
+                          {t.api.save} {!isMobile && t.api.changes}
                         </Button>
                         <IconButton
                           onClick={() => {
@@ -468,7 +493,7 @@ export default function ApiPage() {
                               {editingApp?.name}
                             </Typography>
                             <Typography level="body-sm" className="text-gray-500 dark:text-gray-400 tracking-wide">
-                            {editingApp?.description || "No information..."}
+                              {editingApp?.description || t.api.no_info}
                             </Typography>
                           </div>
                           <div className="flex items-center gap-2 pt-2">
@@ -541,30 +566,30 @@ export default function ApiPage() {
                               }
                             }}
                           >
-                            <Tab disableIndicator value="general">General</Tab>
-                            <Tab disableIndicator value="oauth">OAuth</Tab>
+                            <Tab disableIndicator value="general">{t.api.general}</Tab>
+                            <Tab disableIndicator value="oauth">{t.api.oauth}</Tab>
                           </TabList>
                           <TabPanel sx={{ px: 0, width: '100%' }} value="general">
                             <Stack spacing={3} sx={{ width: '100%' }}>
                               <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6 w-full">
-                                <Typography level="h4" className="mb-4">Application Settings</Typography>
+                                <Typography level="h4" className="mb-4">{t.api.app_settings}</Typography>
                                 <Typography level="body-sm" className="mb-6 text-gray-500 dark:text-gray-400 pb-4">
-                                  Configure your application&apos;s basic settings and information.
+                                  {t.api.app_settings_desc}
                                 </Typography>
                                 <FormControl>
-                                  <FormLabel>Name</FormLabel>
+                                  <FormLabel>{t.api.name}</FormLabel>
                                   <Input
                                     value={editingApp?.name}
                                     onChange={(e) => editingApp && handleUpdateApp({ ...editingApp, name: e.target.value })}
                                     sx={{ borderRadius: '20px' }}
                                   />
                                   <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                    The name of your application as it will appear to users
+                                    {t.api.app_name_desc}
                                   </Typography>
                                 </FormControl>
                                 <FormControl className="mt-4">
-                                  <Tooltip arrow placement="top" color="danger" variant="outlined" title="To install the image, you need to approve your company URL.">
-                                    <FormLabel sx={{ color: 'red' }}>Icon</FormLabel>
+                                  <Tooltip arrow placement="top" color="danger" variant="outlined" title={t.api.icon_tooltip}>
+                                    <FormLabel sx={{ color: 'red' }}>{t.api.icon}</FormLabel>
                                   </Tooltip>
                                   <Input
                                     disabled
@@ -573,11 +598,11 @@ export default function ApiPage() {
                                     sx={{ borderRadius: '20px' }}
                                   />
                                   <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                    Your application&apos;s icon (requires company URL approval)
+                                    {t.api.app_icon_desc}
                                   </Typography>
                                 </FormControl>
                                 <FormControl className="mt-4">
-                                  <FormLabel>Description</FormLabel>
+                                  <FormLabel>{t.api.description}</FormLabel>
                                   <Textarea
                                     value={editingApp?.description || ''}
                                     onChange={(e) => editingApp && handleUpdateApp({ ...editingApp, description: e.target.value })}
@@ -585,13 +610,13 @@ export default function ApiPage() {
                                     sx={{ borderRadius: '20px' }}
                                   />
                                   <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                    A brief description of your application
+                                    {t.api.app_desc_desc}
                                   </Typography>
                                 </FormControl>
                                 <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
-                                  <Typography level="title-sm" className="mb-2">Application Credentials</Typography>
+                                  <Typography level="title-sm" className="mb-2">{t.api.credentials}</Typography>
                                   <FormControl className="mt-4">
-                                    <FormLabel>APP ID</FormLabel>
+                                    <FormLabel>{t.api.app_id}</FormLabel>
                                     <div
                                       onClick={() => {
                                         if (editingApp?.id) {
@@ -604,11 +629,11 @@ export default function ApiPage() {
                                       </span>
                                     </div>
                                     <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Your application&apos;s unique id (click to copy)
+                                      {t.api.app_id_desc}
                                     </Typography>
                                   </FormControl>
                                   <FormControl className="mt-4">
-                                    <FormLabel>API KEY</FormLabel>
+                                    <FormLabel>{t.api.api_key}</FormLabel>
                                     <div className="flex items-center gap-2 group">
                                       <div
                                         className="relative font-mono text-sm cursor-pointer"
@@ -627,7 +652,7 @@ export default function ApiPage() {
                                       </div>
                                     </div>
                                     <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                      Your application&apos;s unique API key (click to copy)
+                                      {t.api.api_key_desc}
                                     </Typography>
                                   </FormControl>
                                 </div>
@@ -637,12 +662,12 @@ export default function ApiPage() {
                           <TabPanel sx={{ px: 0, width: '100%' }} value="oauth">
                             <Stack spacing={3} sx={{ width: '100%' }}>
                               <div className="bg-purple-50/10 dark:bg-purple-950/10 rounded-[20px] p-6 w-full">
-                                <Typography level="h4" className="mb-4">OAuth 2.0 Configuration</Typography>
+                                <Typography level="h4" className="mb-4">{t.api.oauth_config}</Typography>
                                 <Typography level="body-sm" className="mb-6 text-gray-500 dark:text-gray-400 pb-4">
-                                  Configure OAuth 2.0 settings for your application. This will allow users to authenticate with your application using their SCREW: ID account.
+                                  {t.api.oauth_config_desc}
                                 </Typography>
                                 <FormControl>
-                                  <FormLabel>Enable OAuth</FormLabel>
+                                  <FormLabel>{t.api.enable_oauth}</FormLabel>
                                   <div className="flex items-center">
                                     <Switch
                                       disabled
@@ -661,7 +686,7 @@ export default function ApiPage() {
                                 {editingApp?.oauth?.enabled || true && (
                                   <>
                                     <FormControl className="mt-4">
-                                      <FormLabel>Redirect URI</FormLabel>
+                                      <FormLabel>{t.api.redirect_uri}</FormLabel>
                                       <Input
                                         value={editingApp?.oauth?.redirectUri || ''}
                                         onChange={(e) => editingApp && handleUpdateApp({
@@ -676,11 +701,11 @@ export default function ApiPage() {
                                         sx={{ borderRadius: '20px' }}
                                       />
                                       <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                        The URL where users will be redirected after authentication
+                                        {t.api.redirect_uri_desc}
                                       </Typography>
                                     </FormControl>
                                     <FormControl className="mt-4">
-                                      <FormLabel>Scopes</FormLabel>
+                                      <FormLabel>{t.api.scopes}</FormLabel>
                                       <Select
                                         multiple
                                         value={editingApp?.oauth?.scopes || []}
@@ -688,80 +713,94 @@ export default function ApiPage() {
                                           ...editingApp,
                                           oauth: {
                                             enabled: editingApp.oauth?.enabled || false,
-                                            redirectUri: editingApp.oauth?.redirectUri || '',
+                                            redirectUri: editingApp?.oauth?.redirectUri || '',
                                             scopes: newValue
                                           }
                                         })}
                                         renderValue={(selected) => (
                                           <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                                            {selected.map((option, index) => (
-                                              <Typography key={option.value} level="body-sm">
-                                                {option.value.charAt(0).toUpperCase() + option.value.slice(1)}
-                                                {index < selected.length - 1 ? ', ' : ''}
-                                              </Typography>
-                                            ))}
+                                            {selected.map((option, index) => {
+                                              let label = '';
+                                              if (option.value === 'identify') label = t.api.identify;
+                                              else if (option.value === 'email') label = t.api.email;
+                                              else if (option.value === 'profile') label = t.api.profile;
+                                              else if (option.value === 'connections') label = t.api.connections;
+                                              else if (option.value === 'token') label = t.api.token;
+                                              else label = String(option.value);
+                                              return (
+                                                <Typography key={option.value} level="body-sm">
+                                                  {label}
+                                                  {index < selected.length - 1 ? ', ' : ''}
+                                                </Typography>
+                                              );
+                                            })}
                                           </Box>
                                         )}
                                         sx={{ borderRadius: '20px' }}
                                       >
                                         <Option value="identify">
                                           <div>
-                                            <Typography level="body-sm">Identify</Typography>
+                                            <Typography level="body-sm">{t.api.identify}</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user&apos;s usertag and flags
+                                              {t.api.identify_desc}
                                             </Typography>
                                           </div>
                                         </Option>
                                         <Option value="email">
                                           <div>
-                                            <Typography level="body-sm">Email</Typography>
+                                            <Typography level="body-sm">{t.api.email}</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user&apos;s email address
+                                              {t.api.email_desc}
                                             </Typography>
                                           </div>
                                         </Option>
                                         <Option value="profile">
                                           <div>
-                                            <Typography level="body-sm">Profile</Typography>
+                                            <Typography level="body-sm">{t.api.profile}</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user&apos;s profile information including name, avatar, and bio
+                                              {t.api.profile_desc}
                                             </Typography>
                                           </div>
                                         </Option>
                                         <Option value="connections">
                                           <div>
-                                            <Typography level="body-sm">Connections</Typography>
+                                            <Typography level="body-sm">{t.api.connections}</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Allows access to user&apos;s connected accounts and services
+                                              {t.api.connections_desc}
                                             </Typography>
                                           </div>
                                         </Option>
                                         <Option value="token">
                                           <div>
-                                            <Typography level="body-sm">Token</Typography>
+                                            <Typography level="body-sm">{t.api.token}</Typography>
                                             <Typography level="body-xs" sx={{ color: 'text.secondary' }}>
-                                              Passes user token for SCREW: API calls
+                                              {t.api.token_desc}
                                             </Typography>
                                           </div>
                                         </Option>
                                       </Select>
                                       <Typography level="body-xs" className="mt-1 text-gray-500 dark:text-gray-400 pt-1">
-                                        Select the permissions your application needs
+                                        {t.api.scopes_desc}
                                       </Typography>
                                     </FormControl>
                                     <div className="mt-6 p-4 bg-white dark:bg-purple-950/40 rounded-[20px] border border-purple-100/20 dark:border-purple-900/20">
-                                      <Typography level="title-sm" className="mb-2">OAuth URL</Typography>
+                                      <Typography level="title-sm" className="mb-2">{t.api.oauth_url}</Typography>
                                       {(editingApp?.oauth?.enabled || true) && editingApp?.oauth?.redirectUri ? (
-                                        <Link level="body-sm" onClick={() => window.open(`https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp?.oauth?.redirectUri ? editingApp.oauth.redirectUri : 'https://auth.screwltd.com/')}&scope=${(editingApp?.oauth?.scopes || []).join(',')}`, '_blank')} underline="none" className="font-mono break-all">
-                                          {`https://auth.screwltd.com/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}`}
+                                        <Link
+                                          level="body-sm"
+                                          onClick={() => window.open(`${getOAuthBaseUrl()}/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp?.oauth?.redirectUri ? editingApp.oauth.redirectUri : getOAuthBaseUrl() + '/')}&scope=${(editingApp?.oauth?.scopes || []).join(',')}`, '_blank')}
+                                          underline="none"
+                                          className="font-mono break-all"
+                                        >
+                                          {`${getOAuthBaseUrl()}/oauth2/authorize?client_id=${editingApp.id}&redirect_uri=${encodeURIComponent(editingApp.oauth.redirectUri)}&scope=${(editingApp.oauth.scopes || []).join(',')}`}
                                         </Link>
                                       ) : (
                                         <Typography level="body-sm" className="font-mono break-all">
-                                          Enable OAuth and set redirect URI to generate URL
+                                          {t.api.enable_oauth_url}
                                         </Typography>
                                       )}
                                       <Typography level="body-xs" className="mt-2 text-gray-500 dark:text-gray-400">
-                                        Use this URL to initiate the OAuth flow in your application
+                                        {t.api.oauth_url_desc}
                                       </Typography>
                                     </div>
                                   </>

@@ -9,12 +9,20 @@ import { useTheme } from '@mui/joy/styles';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthProvider';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
 
 interface IPResponse {
     country: string;
     currency_code: string;
     state: string;
     city: string;
+}
+
+function useTranslation() {
+    const { language } = useLanguage();
+    return language === 'ru' ? ru : en;
 }
 
 export default function ChangeCountryPage() {
@@ -25,6 +33,7 @@ export default function ChangeCountryPage() {
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const [apiMessage, setApiMessage] = useState<string | null>(null);
+    const t = useTranslation();
 
     useEffect(() => {
         const fetchUserLocation = async () => {
@@ -95,10 +104,10 @@ export default function ChangeCountryPage() {
                                 color: 'white',
                             }}
                         >
-                            Back
+                            {t.region.back}
                         </Button>
                         <Typography level="h4" fontWeight="bold" sx={{ color: 'white' }}>
-                            Change Country
+                            {t.region.change_country}
                         </Typography>
                     </div>
                 </BlurFade>
@@ -115,10 +124,10 @@ export default function ChangeCountryPage() {
                             <div>
                                 <Typography level="body-md" mb={2} sx={{ color: 'white' }}>
                                     {loading ? (
-                                        'Loading location information...'
+                                        t.region.loading
                                     ) : (
                                         <>
-                                            You are contacting us from <b>{userLocation?.country || 'Unknown'}</b> and your account is registered in <b>{user?.country}</b>.<br />{userLocation?.country === user?.country ? 'Country is already set.' : 'Do you wish to continue?'}
+                                            {t.region.contact_from} <b>{userLocation?.country || t.region.unknown}</b> {t.region.and_registered} <b>{user?.country}</b>.<br />{userLocation?.country === user?.country ? t.region.already_set : t.region.continue}
                                         </>
                                     )}
                                 </Typography>
@@ -153,7 +162,7 @@ export default function ChangeCountryPage() {
                                     loading={updating}
                                     disabled={loading || updating || !userLocation?.country || userLocation?.country === user?.country}
                                 >
-                                    {userLocation?.country === user?.country ? 'No changes needed' : 'Change Country'}
+                                    {userLocation?.country === user?.country ? t.region.no_changes : t.region.change_country}
                                 </Button>
                             </div>
                         </div>

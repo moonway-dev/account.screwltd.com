@@ -6,6 +6,14 @@ import { IoIosCloseCircle } from "react-icons/io"
 import { BsThreeDots } from "react-icons/bs"
 import BlurFade from "@/components/magicui/blur-fade";
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
+
+function useTranslation() {
+  const { language } = useLanguage();
+  return language === 'ru' ? ru : en;
+}
 
 const maskEmail = (email: string) => {
   const [username, domain] = email.split('@');
@@ -19,12 +27,13 @@ const maskEmail = (email: string) => {
 
 export default function LinksPage() {
   const { user, setNewData } = useAuth();
+  const t = useTranslation();
 
   const userDetails = [
     {
       condition: user?.email,
       icon: <MdAlternateEmail className='absolute size-24 opacity-10 mt-[-24px] ml-[-22px] -rotate-[25deg] pointer-events-none' />,
-      label: 'E-mail',
+      label: t.links.email,
       value: maskEmail(user?.email),
     },
     {
@@ -67,7 +76,7 @@ export default function LinksPage() {
   return (
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <BlurFade delay={0.05}>
-        <p className='font-medium text-xl mb-4 mt-[-40px]'>SCREW: ID</p>
+        <p className='font-medium text-xl mb-4 mt-[-40px]'>{t.settings.title}</p>
       </BlurFade>
       <BlurFade className="w-full" delay={0.05}>
         <div
@@ -77,7 +86,7 @@ export default function LinksPage() {
             "transform-gpu dark:bg-black dark:[border:1px_solid_rgba(147,112,219,.15)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
           )}
         >
-          <p className="text-md font-medium text-violet-300">Link other social networks</p>
+          <p className="text-md font-medium text-violet-300">{t.links.link_socials}</p>
           <div className="flex overflow-x-auto space-x-2 mt-2">
             {iconButtons.map((button, index) =>
               button.condition && (

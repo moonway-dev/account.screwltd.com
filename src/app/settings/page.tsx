@@ -7,13 +7,22 @@ import { useAuth, updatePassword } from '@/contexts/AuthProvider';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MdAlternateEmail } from "react-icons/md";
+import { useLanguage } from '@/contexts/LanguageContext';
+import en from '@/locales/en';
+import ru from '@/locales/ru';
 
 type SnackbarColor = 'neutral' | 'danger';
 const initialSnackbarColor: SnackbarColor = 'neutral';
 
+function useTranslation() {
+  const { language } = useLanguage();
+  return language === 'ru' ? ru : en;
+}
+
 export default function SettingsPage() {
   const { user, setNewData } = useAuth();
   const router = useRouter();
+  const t = useTranslation();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarColor, setSnackbarColor] = useState<SnackbarColor>(initialSnackbarColor);
@@ -44,7 +53,7 @@ export default function SettingsPage() {
 
   const handleUsernameSubmit = async () => {
     if (username.length < 4) {
-      setSnackbarText('Username must be at least 4 characters long.');
+      setSnackbarText(t.settings.snackbar.username_short);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<User size={16}/>);
       setOpenSnackbar(true);
@@ -52,7 +61,7 @@ export default function SettingsPage() {
     }
 
     if (username === user?.username) {
-      setSnackbarText('Username is the same as current.');
+      setSnackbarText(t.settings.snackbar.username_same);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<User size={16}/>);
       setOpenSnackbar(true);
@@ -61,13 +70,13 @@ export default function SettingsPage() {
 
     try {
       await setNewData('username', username);
-      setSnackbarText('Username successfully updated.');
+      setSnackbarText(t.settings.snackbar.username_updated);
       setSnackbarColor("neutral" as SnackbarColor);
       setSnackbarIcon(<User size={16}/>);
       setOpenSnackbar(true);
     } catch (err: unknown) {
       console.log(err);
-      setSnackbarText(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setSnackbarText(err instanceof Error ? err.message : t.settings.snackbar.error);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<User size={16}/>);
       setOpenSnackbar(true);
@@ -76,7 +85,7 @@ export default function SettingsPage() {
 
   const handleUserTagSubmit = async () => {
     if (userTag.length < 4) {
-      setSnackbarText('Tag must be at least 4 characters long.');
+      setSnackbarText(t.settings.snackbar.tag_short);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<MdAlternateEmail size={16}/>);
       setOpenSnackbar(true);
@@ -84,7 +93,7 @@ export default function SettingsPage() {
     }
 
     if (!/^[a-zA-Z0-9\-_]+$/.test(userTag)) {
-      setSnackbarText('Tag can only contain English letters, numbers, - and _ symbols.');
+      setSnackbarText(t.settings.snackbar.tag_invalid);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<MdAlternateEmail size={16}/>);
       setOpenSnackbar(true);
@@ -92,7 +101,7 @@ export default function SettingsPage() {
     }
 
     if (userTag === user?.usertag) {
-      setSnackbarText('Tag is the same as current.');
+      setSnackbarText(t.settings.snackbar.tag_same);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<MdAlternateEmail size={16}/>);
       setOpenSnackbar(true);
@@ -101,13 +110,13 @@ export default function SettingsPage() {
 
     try {
       await setNewData('usertag', userTag);
-      setSnackbarText('Tag successfully updated.');
+      setSnackbarText(t.settings.snackbar.tag_updated);
       setSnackbarColor("neutral" as SnackbarColor);
       setSnackbarIcon(<MdAlternateEmail size={16}/>);
       setOpenSnackbar(true);
     } catch (err: unknown) {
       console.log(err);
-      setSnackbarText(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setSnackbarText(err instanceof Error ? err.message : t.settings.snackbar.error);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<MdAlternateEmail size={16}/>);
       setOpenSnackbar(true);
@@ -117,7 +126,7 @@ export default function SettingsPage() {
   const handlePasswordSubmit = async (e: any) => {
     e.preventDefault();
     if (password.length < 6) {
-      setSnackbarText('The password must be at least 6 characters long.');
+      setSnackbarText(t.settings.snackbar.password_short);
       setSnackbarColor("danger");
       setSnackbarIcon(<KeyRound />);
       setOpenSnackbar(true);
@@ -126,13 +135,13 @@ export default function SettingsPage() {
 
     try {
       await updatePassword(password, user?.jwt_token);
-      setSnackbarText('Your password successfuly changed.');
+      setSnackbarText(t.settings.snackbar.password_updated);
       setSnackbarColor("neutral" as SnackbarColor);
       setSnackbarIcon(<KeyRound />);
       setOpenSnackbar(true);
     } catch (err: unknown) {
       console.log(err);
-      setSnackbarText(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setSnackbarText(err instanceof Error ? err.message : t.settings.snackbar.error);
       setSnackbarColor("danger" as SnackbarColor);
       setSnackbarIcon(<KeyRound />);
       setOpenSnackbar(true);
@@ -149,7 +158,7 @@ export default function SettingsPage() {
   return (<>
     <main className="flex flex-col items-center min-h-[100dvh] p-6">
       <BlurFade delay={0.05}>
-        <p className='font-medium text-xl mb-4 mt-[-40px]'>SCREW: ID</p>
+        <p className='font-medium text-xl mb-4 mt-[-40px]'>{t.settings.title}</p>
       </BlurFade>
       <BlurFade className="w-full mb-2" delay={0.15}>
         <div
@@ -160,36 +169,36 @@ export default function SettingsPage() {
           )}
         >
           <Stack spacing={1}>
-            <Typography level="title-lg">Account</Typography>
+            <Typography level="title-lg">{t.settings.account}</Typography>
             <Stack spacing={1}>
-              <Typography level="title-sm">Username</Typography>
+              <Typography level="title-sm">{t.settings.username}</Typography>
               <Stack direction='row' spacing={1}>
                 <Input 
                   value={username} 
                   onChange={handleUsernameChange} 
                   sx={{ width: '100%', borderRadius: '25px' }} 
-                  placeholder="Enter new username..." 
+                  placeholder={t.settings.username} 
                 />
                 <Button onClick={handleUsernameSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
               </Stack>
             </Stack>
             <Stack spacing={1}>
-              <Typography level="title-sm">Tag</Typography>
+              <Typography level="title-sm">{t.settings.tag}</Typography>
               <Stack direction='row' spacing={1}>
                 <Input 
                   value={userTag}
                   onChange={handleUserTagChange}
                   sx={{ width: '100%', borderRadius: '25px' }}
                   startDecorator={<MdAlternateEmail />}
-                  placeholder="Enter user tag..."
+                  placeholder={t.settings.tag}
                 />
                 <Button onClick={handleUserTagSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
               </Stack>
             </Stack>
             <Stack spacing={1}>
-              <Typography level="title-sm">Password</Typography>
+              <Typography level="title-sm">{t.settings.password}</Typography>
               <Stack direction='row' spacing={1}>
-                <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '25px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder="Enter new password..." />
+                <Input value={password} onChange={handlePasswordChange} sx={{ width: '100%',  borderRadius: '25px' }} type="password" startDecorator={<KeyRound className="size-4" />} placeholder={t.settings.password} />
                 <Button onClick={handlePasswordSubmit} sx={{ marginY: 0.05, borderRadius: 250 }}>Save</Button>
               </Stack>
             </Stack>
@@ -205,10 +214,10 @@ export default function SettingsPage() {
           )}
         >
           <Stack spacing={1}>
-            <Typography level="title-lg">Location</Typography>
+            <Typography level="title-lg">{t.settings.location}</Typography>
             <Stack direction='row' spacing={1}>
-              <Typography sx={{ width: '100%' }}>Current country: <b>{user?.country}</b></Typography>
-              <Button onClick={() => router.push('/wizard/region')} sx={{ borderRadius: 250 }}>Change</Button>
+              <Typography sx={{ width: '100%' }}>{t.settings.current_country}: <b>{user?.country}</b></Typography>
+              <Button onClick={() => router.push('/wizard/region')} sx={{ borderRadius: 250 }}>{t.settings.change}</Button>
             </Stack>
           </Stack>
         </div>
@@ -222,9 +231,9 @@ export default function SettingsPage() {
           )}
         >
           <Stack spacing={1}>
-            <Typography level="title-lg">Collection of information</Typography>
+            <Typography level="title-lg">{t.settings.collect_info}</Typography>
             <Stack direction='row' spacing={1}>
-              <Typography sx={{ width: '100%' }}>Save sent attributes</Typography>
+              <Typography sx={{ width: '100%' }}>{t.settings.save_attributes}</Typography>
               <Switch checked={checked} onChange={handleSwitch}/>
             </Stack>
           </Stack>

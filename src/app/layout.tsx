@@ -13,6 +13,7 @@ import GridPattern from "@/components/magicui/grid-pattern";
 import AuthProvider from "@/contexts/AuthProvider";
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import { getInitColorSchemeScript } from '@mui/joy/styles';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -152,22 +153,24 @@ export default function RootLayout({
       >{getInitColorSchemeScript({ defaultMode: 'dark' })}
         <CssVarsProvider theme={theme} defaultMode="dark">
           <AuthProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark">
-              <TooltipProvider delayDuration={0}>
-                <GridPattern
-                  width={30}
-                  height={30}
-                  x={-1}
-                  y={-1}
-                  strokeDasharray={"4 2"}
-                  className={cn(
-                    "fixed opacity-50 [mask-image:radial-gradient(1000px_circle_at_center,white,transparent)] inset-y-[-30%] h-[150dvh] skew-y-12",
-                  )}
-                />
-                {children}
-                <Navbar />
-              </TooltipProvider>
-            </ThemeProvider>
+            <LanguageProvider>
+              <ThemeProvider attribute="class" defaultTheme="dark">
+                <TooltipProvider delayDuration={0}>
+                  <GridPattern
+                    width={30}
+                    height={30}
+                    x={-1}
+                    y={-1}
+                    strokeDasharray={"4 2"}
+                    className={cn(
+                      "fixed opacity-50 [mask-image:radial-gradient(1000px_circle_at_center,white,transparent)] inset-y-[-30%] h-[150dvh] skew-y-12",
+                    )}
+                  />
+                  {children}
+                  <Navbar />
+                </TooltipProvider>
+              </ThemeProvider>
+            </LanguageProvider>
           </AuthProvider>
         </CssVarsProvider>
       </body>

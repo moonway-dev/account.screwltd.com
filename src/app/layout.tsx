@@ -3,7 +3,6 @@
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/siteSettings";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
@@ -136,10 +135,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let title = 'SCREW: ID';
+  if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.net')) {
+    title = 'ACCEPTANCE: ID';
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>SCREW: ID</title>
+        <title>{title}</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <meta name="description" content="SCREW: ID — Your account" />
         <link rel="icon" type="image/x-icon" href="https://screwltd.com/faviconMain.ico" />

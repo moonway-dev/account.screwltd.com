@@ -201,8 +201,8 @@ export default function ApiPage() {
   };
 
   const getOAuthBaseUrl = () => {
-    if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.net')) {
-      return 'https://auth.acceptancegroup.net';
+    if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.org')) {
+      return 'https://auth.acceptancegroup.org';
     }
     return 'https://auth.screwltd.com';
   };

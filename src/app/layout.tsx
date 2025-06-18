@@ -136,7 +136,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   let title = 'SCREW: ID';
-  if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.net')) {
+  if (typeof window !== 'undefined' && window.location.hostname.includes('acceptancegroup.org')) {
     title = 'ACCEPTANCE: ID';
   }
   return (

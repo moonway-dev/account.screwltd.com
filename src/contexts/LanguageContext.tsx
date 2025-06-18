@@ -17,7 +17,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.hostname === 'account.acceptancegroup.net' || window.location.hostname === 'localhost') {
+      if (window.location.hostname === 'account.acceptancegroup.org' || window.location.hostname === 'localhost') {
         setLanguage('ru');
       } else {
         setLanguage('en');
